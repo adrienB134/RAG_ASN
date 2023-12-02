@@ -13,6 +13,7 @@ from langchain.vectorstores.vectara import Vectara
 from langchain.vectorstores.chroma import Chroma
 from langchain.vectorstores.faiss import FAISS
 from langchain.embeddings.sentence_transformer import SentenceTransformerEmbeddings
+from langchain.embeddings.openai import OpenAIEmbeddings
 
 from app.callback import QuestionGenCallbackHandler, StreamingLLMCallbackHandler
 from app.query_data import get_chain
@@ -44,7 +45,7 @@ from app.schemas import ChatResponse
 
 def startup_event():
     logging.info("loading vectorstore")
-    embeddings = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
+    embeddings = OpenAIEmbeddings()
 
     vectorstore = Chroma(
         collection_name="lettres_de_suivi",
