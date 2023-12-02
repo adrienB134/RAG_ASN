@@ -14,9 +14,9 @@ from langchain.vectorstores.chroma import Chroma
 from langchain.vectorstores.faiss import FAISS
 from langchain.embeddings.sentence_transformer import SentenceTransformerEmbeddings
 
-from callback import QuestionGenCallbackHandler, StreamingLLMCallbackHandler
-from query_data import get_chain
-from schemas import ChatResponse
+from app.callback import QuestionGenCallbackHandler, StreamingLLMCallbackHandler
+from app.query_data import get_chain
+from app.schemas import ChatResponse
 
 
 # def startup_event():
