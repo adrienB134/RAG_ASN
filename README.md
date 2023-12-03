@@ -30,12 +30,13 @@ Retrieval is done using LangChain RetrievalQAwithSources chain and OpenAI gpt-3.
 #### To Do: <br>
 * Experiment with other chains<br>
 * Use a customized prompt<br>
+* Introduce a reranking step. See [here](https://medium.com/llamaindex-blog/boosting-rag-picking-the-best-embedding-reranker-models-42d079022e83)<br>
 
 ## Plans for the future: Going fully local
-OpenAI is great but it's expensive. A solution for this would be to use a small local model. Mistral-7B is a good candidate for that. <br>
-#### Step 1: Using ollama
-First simple solution would be to plug the app to Mistral running loccally on ollama<br>
-#### Step 2: Fine tuning Mistral
+OpenAI is great but it's expensive. A solution for this would be to use a "small" local model. <br>
+#### Step 1: Using a small model + ollama
+First simple solution would be to plug the app to a model running locally on ollama<br>
+#### Step 2: Fine tuning 
 To get better results fine tuning may be the way!<br>
 Building the fine tuning dataset can be done by asking any LLM to prepare a set of questions and answers for each documents.<br>
-Then using it to fine tune a quantized version of Mistral-7B (or any other). That can then be run locally.<br>
+Then using it to fine tune a quantized version of a small model like [here](https://gathnex.medium.com/mistral-7b-fine-tuning-a-step-by-step-guide-52122cdbeca8) and [there](https://github.com/brevdev/notebooks/blob/main/mistral-finetune-own-data.ipynb). That can then be run locally.<br>
