@@ -139,6 +139,7 @@ vectorstore.pkl
 Ingestion/ASN/
 Ingestion/chroma_db/
 Ingestion/faiss_index/
+langserve/
 
 .rag_env
 *.ipynb

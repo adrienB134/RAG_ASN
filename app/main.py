@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Optional
 import os
 from dotenv import load_dotenv
-
+import uvicorn
 from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
 from fastapi.templating import Jinja2Templates
 from langchain.vectorstores import VectorStore
@@ -13,7 +13,9 @@ from langchain.vectorstores.vectara import Vectara
 from langchain.vectorstores.chroma import Chroma
 from langchain.vectorstores.faiss import FAISS
 from langchain.embeddings.sentence_transformer import SentenceTransformerEmbeddings
-from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.embeddings import (
+    HuggingFaceInferenceAPIEmbeddings,
+)
 
 from app.callback import QuestionGenCallbackHandler, StreamingLLMCallbackHandler
 from app.query_data import get_chain
@@ -45,7 +47,11 @@ from app.schemas import ChatResponse
 
 def startup_event():
     logging.info("loading vectorstore")
-    embeddings = OpenAIEmbeddings()
+    embeddings = HuggingFaceInferenceAPIEmbeddings(
+        api_key=os.environ["HF_TOKEN"],
+        api_url="https://pikmjtam1n1c2rzu.us-east-1.aws.endpoints.huggingface.cloud",
+        model_name="WhereIsAI/UAE-Large-V1",
+    )
 
     vectorstore = Chroma(
         collection_name="lettres_de_suivi",
@@ -84,9 +90,9 @@ async def websocket_endpoint(websocket: WebSocket):
         try:
             # Receive and send back the client message
             question = await websocket.receive_text()
-            test_db = vectorstore.similarity_search(question)
+            # test_db = vectorstore.similarity_search(question)
             print("TESTDB")
-            print(test_db)
+            # print(test_db)
             resp = ChatResponse(sender="you", message=question, type="stream")
             await websocket.send_json(resp.dict())
             print(resp)
@@ -97,9 +103,7 @@ async def websocket_endpoint(websocket: WebSocket):
             print("START")
             print(start_resp)
 
-            result = await qa_chain.acall(
-                {"question": question, "chat_history": chat_history}
-            )
+            result = qa_chain.invoke(f"{question}")
             print("QUESTION")
             print(result)
 
@@ -143,6 +147,4 @@ async def websocket_endpoint(websocket: WebSocket):
 
 
 if __name__ == "__main__":
-    import uvicorn
-
-    uvicorn.run(app, host="0.0.0.0", port=9000)
+    uvicorn.run(app, host="0.0.0.0", port=9001)
