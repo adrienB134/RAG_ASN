@@ -76,7 +76,7 @@ def make_layout() -> Layout:
 def ingest_docs(endpoint: str) -> None:
     load_dotenv()
     begin = time.time()
-    for folder in range(1, 2):
+    for folder in range(0, 100):
         folder_start = time.time()
 
         for file in os.listdir(f"ASN/lettres_de_suivi/{folder}"):
@@ -140,7 +140,7 @@ def ingest_docs(endpoint: str) -> None:
                             documents,
                             embeddings_model,
                             persist_directory="./chroma_db",
-                            collection_name="lettres_de_suivi",
+                            collection_name="ASN",
                         )
 
                     console.print(
@@ -175,7 +175,7 @@ def ingest_docs(endpoint: str) -> None:
     console2.print(
         f"1 The approximate cost is {round((time.time() - begin) / 60 / 60 * 0.6, 2)}$"
     )
-    overall_progress.update(overall_task, completed=10)
+    overall_progress.update(overall_task, completed=100)
 
 
 if __name__ == "__main__":
@@ -198,7 +198,7 @@ if __name__ == "__main__":
         TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
         TimeElapsedColumn(),
     )
-    overall_task = overall_progress.add_task("All Folders", total=10)
+    overall_task = overall_progress.add_task("All Folders", total=100)
     progress_table = Layout()
     progress_table.split_row(
         Panel(

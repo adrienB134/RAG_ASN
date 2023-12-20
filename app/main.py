@@ -22,29 +22,6 @@ from app.query_data import get_chain
 from app.schemas import ChatResponse
 
 
-# def startup_event():
-#     logging.info("loading vectorstore")
-
-#     global vectorstore
-#     vectorstore = Vectara(
-#         vectara_customer_id=os.environ["VECTARA_CUSTOMER_ID"],
-#         vectara_corpus_id=os.environ["VECTARA_CORPUS_ID"],
-#         vectara_api_key=os.environ["VECTARA_API_KEY"],
-#     )
-
-
-# def startup_event():
-#     logging.info("loading vectorstore")
-#     embeddings = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
-#     global vectorstore
-#     vectorstore = FAISS.load_local("./Ingestion/faiss_index", embeddings)
-#     test_db = vectorstore.similarity_search_with_score(
-#         "la baisse de la température et de la pression du réacteur doit être réalisée dans \ndes délais contraints3, représentatifs des délais nécessaires pour procéder au diagnostic",
-#         fetch_k=5,
-#     )
-#     print(f"There are", test_db, "in the collection")
-
-
 def startup_event():
     logging.info("loading vectorstore")
     embeddings = HuggingFaceInferenceAPIEmbeddings(
@@ -54,7 +31,7 @@ def startup_event():
     )
 
     vectorstore = Chroma(
-        collection_name="lettres_de_suivi",
+        collection_name="ASN",
         persist_directory="./Ingestion/chroma_db",
         embedding_function=embeddings,
     )
@@ -90,9 +67,9 @@ async def websocket_endpoint(websocket: WebSocket):
         try:
             # Receive and send back the client message
             question = await websocket.receive_text()
-            # test_db = vectorstore.similarity_search(question)
+            test_db = vectorstore.similarity_search(question)
             print("TESTDB")
-            # print(test_db)
+            print(test_db)
             resp = ChatResponse(sender="you", message=question, type="stream")
             await websocket.send_json(resp.dict())
             print(resp)
@@ -102,8 +79,8 @@ async def websocket_endpoint(websocket: WebSocket):
             await websocket.send_json(start_resp.dict())
             print("START")
             print(start_resp)
-
-            result = qa_chain.invoke(f"{question}")
+            print(f"invoke {question}")
+            result = qa_chain.invoke(question)
             print("QUESTION")
             print(result)
 
@@ -122,14 +99,14 @@ async def websocket_endpoint(websocket: WebSocket):
             print("END")
             print(end_resp)
 
-            for documents in [result["sources"]]:
+            for document in result["documents"]:
                 sources_resp = ChatResponse(
                     sender="bot",
-                    message=result["sources"].split("/")[-1],
+                    message=document["source"].split("/")[-1],
                     type="sources",
                 )
                 await websocket.send_json(sources_resp.dict())
-                print(documents)
+                print(document)
                 print("SOURCES")
                 print(sources_resp)
 
