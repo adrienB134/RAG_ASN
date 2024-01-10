@@ -11,7 +11,7 @@ I got decent results using OpenAI embeddings and GPT4, but I wanted something th
 So I switched to open-source models running on private inference endpoints, first with Mistral then later on with Mixtral when it came out. Mistral results where poor and Mixtral a bit better but not great, but the main issue was the downgrade in retrieved documents relevance probably due to the embedding model. <br><br>
 To improve the results I'm exploring the following ideas:<br>
 - Use an embedding model trained on french (first results on a small sample dataset are looking good)<br>
-- Finetune Mistral (only one I can do on colab) on my data to gain domain knowledge and then use the HyDE retrieval technique (short: ask the llm to imagine the answer document then search similar ones in the real data)<br>
+- Finetune Mistral (only one I can do on colab) on my data to gain domain knowledge and then use the HyDE retrieval technique (short: ask the llm to imagine the answer document then do a similarity search with it)<br>
 - Research tends to show that late-interaction models like ColBERT do better for specific domain RAG, and the architecture will solve my embeddings problem
 
 ## Getting the data
