@@ -20,25 +20,19 @@ import os
 
 
 #
-def format_docs(docs):
+def format_docs(docs) -> str:
     return "\n\n".join(doc.page_content for doc in docs)
 
 
 def get_chain(
-    vectorstore: VectorStore, question_handler, stream_handler, tracing: bool = False
-) -> RetrievalQAWithSourcesChain:
+    vectorstore: VectorStore, question_handler, stream_handler
+) -> RunnableParallel:
     """Create a chain for question/answering."""
 
     load_dotenv()
     manager = AsyncCallbackManager([])
     question_manager = AsyncCallbackManager([question_handler])
     stream_manager = AsyncCallbackManager([stream_handler])
-    if tracing:
-        tracer = LangChainTracer()
-        tracer.load_default_session()
-        manager.add_handler(tracer)
-        question_manager.add_handler(tracer)
-        stream_manager.add_handler(tracer)
 
     hf_llm = HuggingFaceEndpoint(
         endpoint_url="https://euo6lqs9bqkddhci.us-east-1.aws.endpoints.huggingface.cloud",
@@ -48,11 +42,6 @@ def get_chain(
             "temperature": 0.1,
             "max_new_tokens": 488,
         },
-    )
-
-    embeddings_model = HuggingFaceInferenceAPIEmbeddings(
-        api_key=os.environ["HF_TOKEN"],
-        api_url="https://pikmjtam1n1c2rzu.us-east-1.aws.endpoints.huggingface.cloud",
     )
 
     retriever = vectorstore.as_retriever(search_kwargs={"k": 2})

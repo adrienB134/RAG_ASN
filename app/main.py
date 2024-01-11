@@ -22,12 +22,12 @@ from app.query_data import get_chain
 from app.schemas import ChatResponse
 
 
-def startup_event():
+def startup_event() -> Chroma:
     logging.info("loading vectorstore")
     embeddings = HuggingFaceInferenceAPIEmbeddings(
         api_key=os.environ["HF_TOKEN"],
         api_url="https://pikmjtam1n1c2rzu.us-east-1.aws.endpoints.huggingface.cloud",
-        model_name="WhereIsAI/UAE-Large-V1",
+        model_name="antoinelouis/biencoder-camembert-base-mmarcoFR",
     )
 
     vectorstore = Chroma(
@@ -58,25 +58,19 @@ async def websocket_endpoint(websocket: WebSocket):
     stream_handler = StreamingLLMCallbackHandler(websocket)
     chat_history = []
     qa_chain = get_chain(vectorstore, question_handler, stream_handler)
-    # Use the below line instead of the above line to enable tracing
-    # Ensure `langchain-server` is running
-    # qa_chain = get_chain(vectorstore, question_handler, stream_handler, tracing=True)
 
     chat_history.append(("", "Bonjour, je suis ChatASN votre assistant de recherche."))
     while True:
         try:
             # Receive and send back the client message
             question = await websocket.receive_text()
-            test_db = vectorstore.similarity_search(question)
-            print("TESTDB")
-            print(test_db)
             resp = ChatResponse(sender="you", message=question, type="stream")
-            await websocket.send_json(resp.dict())
+            await websocket.send_json(resp.model_dump())
             print(resp)
 
             # Construct a response
             start_resp = ChatResponse(sender="bot", message="", type="start")
-            await websocket.send_json(start_resp.dict())
+            await websocket.send_json(start_resp.model_dump())
             print("START")
             print(start_resp)
             print(f"invoke {question}")
@@ -90,12 +84,12 @@ async def websocket_endpoint(websocket: WebSocket):
                 message=result["answer"],
                 type="stream",
             )
-            await websocket.send_json(result_resp.dict())
+            await websocket.send_json(result_resp.model_dump())
             print("RESULT ")
             print(result_resp)
 
             end_resp = ChatResponse(sender="bot", message="", type="end")
-            await websocket.send_json(end_resp.dict())
+            await websocket.send_json(end_resp.model_dump())
             print("END")
             print(end_resp)
 
@@ -105,7 +99,7 @@ async def websocket_endpoint(websocket: WebSocket):
                     message=document["source"].split("/")[-1],
                     type="sources",
                 )
-                await websocket.send_json(sources_resp.dict())
+                await websocket.send_json(sources_resp.model_dump())
                 print(document)
                 print("SOURCES")
                 print(sources_resp)
@@ -120,7 +114,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 message="Sorry, something went wrong. Try again.",
                 type="error",
             )
-            await websocket.send_json(resp.dict())
+            await websocket.send_json(resp.model_dump())
 
 
 if __name__ == "__main__":

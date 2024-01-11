@@ -1,0 +1,107 @@
+{
+    "os": "Linux-6.5.0-14-generic-x86_64-with-glibc2.38",
+    "python": "3.11.6",
+    "heartbeatAt": "2024-01-09T10:47:18.866493",
+    "startedAt": "2024-01-09T10:47:18.150649",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "<python with no main file>",
+    "codePathLocal": null,
+    "git": {
+        "remote": "https://github.com/adrienB134/RAG_ASN.git",
+        "commit": "151245da2f84f3fd6a57b6fd8eb8b2a1428dad8d"
+    },
+    "email": "102990337+adrienB134@users.noreply.github.com",
+    "root": "/home/adrien/Documents/Coding/RAG_ASN",
+    "host": "adrien-XPS-15-9500",
+    "username": "adrien",
+    "executable": "/home/adrien/Documents/Coding/RAG_ASN/.rag_env/bin/python",
+    "cpu_count": 6,
+    "cpu_count_logical": 12,
+    "cpu_freq": {
+        "current": 3061.9618333333333,
+        "min": 800.0,
+        "max": 5000.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 3061.058,
+            "min": 800.0,
+            "max": 5000.0
+        },
+        {
+            "current": 3056.382,
+            "min": 800.0,
+            "max": 5000.0
+        },
+        {
+            "current": 3056.173,
+            "min": 800.0,
+            "max": 5000.0
+        },
+        {
+            "current": 3057.536,
+            "min": 800.0,
+            "max": 5000.0
+        },
+        {
+            "current": 3053.367,
+            "min": 800.0,
+            "max": 5000.0
+        },
+        {
+            "current": 3051.536,
+            "min": 800.0,
+            "max": 5000.0
+        },
+        {
+            "current": 3048.508,
+            "min": 800.0,
+            "max": 5000.0
+        },
+        {
+            "current": 3056.706,
+            "min": 800.0,
+            "max": 5000.0
+        },
+        {
+            "current": 3064.245,
+            "min": 800.0,
+            "max": 5000.0
+        },
+        {
+            "current": 3054.669,
+            "min": 800.0,
+            "max": 5000.0
+        },
+        {
+            "current": 3062.721,
+            "min": 800.0,
+            "max": 5000.0
+        },
+        {
+            "current": 3070.822,
+            "min": 800.0,
+            "max": 5000.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 91.39589309692383,
+            "used": 79.17951583862305
+        }
+    },
+    "gpu": "NVIDIA GeForce GTX 1650 Ti",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce GTX 1650 Ti",
+            "memory_total": 4294967296
+        }
+    ],
+    "memory": {
+        "total": 30.963199615478516
+    }
+}

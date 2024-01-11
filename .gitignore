@@ -142,4 +142,4 @@ Ingestion/faiss_index/
 langserve/
 
 .rag_env
-*.ipynb
+Ingestion/*.ipynb

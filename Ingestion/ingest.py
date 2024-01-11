@@ -76,7 +76,7 @@ def make_layout() -> Layout:
 def ingest_docs(endpoint: str) -> None:
     load_dotenv()
     begin = time.time()
-    for folder in range(0, 100):
+    for folder in range(1, 100):
         folder_start = time.time()
 
         for file in os.listdir(f"ASN/lettres_de_suivi/{folder}"):
@@ -123,6 +123,10 @@ def ingest_docs(endpoint: str) -> None:
                         )
                         raw_documents = loader.load()
 
+                    with open(
+                        f"ASN/lettres_de_suivi/txt/{file.split('.')[0]}.txt", "w"
+                    ) as f:
+                        f.write(raw_documents[0].page_content)
                     text_splitter = RecursiveCharacterTextSplitter(
                         chunk_size=1000,
                         chunk_overlap=200,
@@ -132,7 +136,7 @@ def ingest_docs(endpoint: str) -> None:
                     embeddings_model = HuggingFaceInferenceAPIEmbeddings(
                         api_key=os.environ["HF_TOKEN"],
                         api_url=f"{endpoint}",
-                        model_name="WhereIsAI/UAE-Large-V1",
+                        model_name="antoinelouis/biencoder-camembert-base-mmarcoFR",
                     )
 
                     for i in range(0, len(documents), 32):
@@ -168,9 +172,9 @@ def ingest_docs(endpoint: str) -> None:
         )
         overall_progress.advance(overall_progress.tasks[0].id)
 
-    console2.print(
-        "1 There are", vectorstore_db._collection.count(), "in the collection"
-    )
+    # console2.print(
+    #     "1 There are", vectorstore_db._collection.count(), "in the collection"
+    # )
     console2.print(f"1 Total time is {round((time.time() - begin) / 60, 2)}min")
     console2.print(
         f"1 The approximate cost is {round((time.time() - begin) / 60 / 60 * 0.6, 2)}$"
