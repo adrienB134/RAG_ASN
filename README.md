@@ -5,7 +5,8 @@ The goal is to build a full Retrieval Augmented Generation chatbot on french dat
 I first completed a basic dense retrieval MVP, which included the following steps:<br>
  * Getting the data<br>
  * Processing it and storing it in a vector store<br>
- * Building a Chat app doing the retrieval and displaying it.  <br><br>
+ * Building a Chat app doing the retrieval and displaying it.  
+   
 Now my end goal is to turn this into a more complex product where the model has domain knowledge and is not only doing basic retrieval.<br>
 ## Models
 I got decent results using OpenAI embeddings and GPT4, but I wanted something that could be used without sending data to a third party as data privacy is a huge concern for companies.
