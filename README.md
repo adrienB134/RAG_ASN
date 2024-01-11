@@ -7,12 +7,14 @@ I first completed the following steps:<br>
  * Processing it and storing it in a vector store<br>
  * Build a Chat app doing the retrieval and displaying it.<br>
   
-I got decent results using OpenAI embeddings and GPT4, but I wanted something that could be used without sending data to a third party as data privacy is a huge concern for companies.<br>
-So I switched to open-source models running on private inference endpoints, first with Mistral then later on with Mixtral when it came out. Mistral results where poor and Mixtral a bit better but not great, but the main issue was the downgrade in retrieved documents relevance probably due to the embedding model. <br><br>
+I got decent results using OpenAI embeddings and GPT4, but I wanted something that could be used without sending data to a third party as data privacy is a huge concern for companies.
+So I switched to open-source models running on private inference endpoints, first with Mistral then later on with Mixtral when it came out.
+Did it work? No! <br>
+Mistral results where poor and Mixtral a bit better but not great, the main issue was the downgrade in retrieved documents relevance due to the embedding model. The mistake I made was using the UAE-Large-V1 model which is only trained on the english language. I switched to biencoder-camembert from [antoine louis](https://huggingface.co/antoinelouis) (he is doing excellent work training models for the french language), results were much better. I also tried replacing mistral by BelGPT2 and results were ok.<br><br>
 To improve the results I'm exploring the following ideas:<br>
-- Use an embedding model trained on french (first results on a small sample dataset are looking good)<br>
-- Finetune Mistral (only one I can do on colab) on my data to gain domain knowledge and then use the HyDE retrieval technique (short: ask the llm to imagine the answer document then do a similarity search with it)<br>
-- Research tends to show that late-interaction models like ColBERT do better for specific domain RAG, and the architecture will solve my embeddings problem
+- Finetune Mistral (and BelGPT2 to compare) on my data to gain domain knowledge and then use the [HyDE](https://arxiv.org/abs/2212.10496) retrieval technique (short: ask the llm to imagine the answer document then do a similarity search with it)<br>
+- Research tends to show that late-interaction models like ColBERT do better for specific domain RAG than single vector representation dense retrievers
+- I also need to build a more robust evaluation method, as I find asking the same set of questions and comparing the results a bit too empirical for my liking
 
 ## Getting the data
 Scraped the ASN site to get the publicly available pdfs regarding nuclear site inspections.
@@ -43,8 +45,10 @@ Retrieval is done using LangChain and the LLM is Mistral.
 
 ## Finetuning for domain knowledge and better results
 #### Mistral: <br>
-Latest dataset uploaded to [HF](https://huggingface.co/datasets/AdrienB134/ASN_pairs). <br>
+Latest sample dataset uploaded to [HF](https://huggingface.co/datasets/AdrienB134/ASN_pairs). <br>
 Need to put more thought in how to structure the dataset to get what I want.  <br>
+#### BelGPT2: <br>
+Haven't gotten to it yet. <br>
 #### ColBERT: <br>
 Retrieval without finetuning looks good. <br>
 A lot of issues with accents when creating dataset for fine-tuning, I need to automate the cleaning or find a way to get the queries without accent. <br>
