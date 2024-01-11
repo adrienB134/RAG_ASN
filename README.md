@@ -27,12 +27,6 @@ The ingestion script does a few things:<br>
 - Embeds those chunks using an embeddings model from huggingface<br>
 - Finally it stores the embeddings in a local chromadb vectorstore<br>
 
-<br>
-Currently embeddings are done using WhereIsAI/UAE-Large-V1. 
-Since it's trained for the english language, it might not be optimal, I need to do more research.
-<br>
-
-
 ## App
 Simple HTML + Javascript frontend.<br>
 FastAPI for the backend.<br>
