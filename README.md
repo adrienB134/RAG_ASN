@@ -52,3 +52,7 @@ A lot of issues with accents when creating dataset for fine-tuning, I need to au
 
 ## Plans for the future: 
 Do something like this to better evaluate model performance https://github.com/Arize-ai/LLMTest_NeedleInAHaystack. 
+
+
+## Things I need to look into: 
+DSPy: https://github.com/stanfordnlp/dspy
