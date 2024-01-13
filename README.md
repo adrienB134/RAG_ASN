@@ -50,6 +50,7 @@ Retrieval without finetuning looks good. <br>
 A lot of issues with accents when creating dataset for fine-tuning, I need to automate the cleaning or find a way to get the queries without accent. <br>
 #### Things I need to look into: 
 DSPy: https://github.com/stanfordnlp/dspy
+DALM: https://github.com/arcee-ai/DALM
 
 ## Plans for the future: 
 Do something like this to better evaluate model performance https://github.com/Arize-ai/LLMTest_NeedleInAHaystack. 
