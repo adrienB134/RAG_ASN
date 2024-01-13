@@ -32,7 +32,7 @@ The ingestion script does a few things:<br>
 ## App
 Simple HTML + Javascript frontend.<br>
 FastAPI for the backend.<br>
-Retrieval is done using LangChain and the LLM is Mistral.
+Retrieval is done through LangChain (similarity search on the vector database) and the LLM used to format the answer is whichever one we deploy to our endpoint.
 
 #### To Do: <br>
 * Introduce a reranking step. See [here](https://medium.com/llamaindex-blog/boosting-rag-picking-the-best-embedding-reranker-models-42d079022e83)<br>
