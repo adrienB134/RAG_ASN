@@ -1,3 +1,5 @@
+Note: I restarted this project almost from scratch [here](https://github.com/adrienB134/ASN_RAG), i'm not working on this one anymore.
+
 # RAG_ASN
 ## 🚧 Building a full RAG chatbot 🚧
 
